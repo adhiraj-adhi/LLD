@@ -1,0 +1,9 @@
+package com.design.schema.model;
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class Exam extends BaseModel {
+    private String name;
+    private int duration;
+}

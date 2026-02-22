@@ -1,6 +1,6 @@
 package models;
 
-import strategies.WinningStrategy;
+import strategies.gamewinningstrategies.WinningStrategy;
 
 import java.util.List;
 
@@ -10,8 +10,6 @@ public class Game {
     private List<WinningStrategy> winningStrategies;
     int indexOfLastPlayerWhoMoved;
     private GameState gameState;
-    private Winner winner;
-    public static void main(String[] args) {
-
-    }
+    private Player winner;
+    private List<Move> moves; // to store the list of moves performed
 }

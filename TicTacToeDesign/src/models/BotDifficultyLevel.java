@@ -1,7 +1,6 @@
 package models;
 
-public enum DifficultyLevel {
-    UNDEFINED,
+public enum BotDifficultyLevel {
     EASY,
     MEDIUM,
     HARD

@@ -1,4 +1,7 @@
 package exceptions;
 
-public class MultipleBotsException {
+public class MultipleBotsException extends Exception {
+    public MultipleBotsException(String error) {
+        super(error);
+    }
 }

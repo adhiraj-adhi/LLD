@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.EmptyMovesUndoOperationException;
+import exceptions.InvalidMoveException;
 import exceptions.MultipleBotsException;
 import strategies.gamewinningstrategies.WinningStrategy;
 
@@ -8,18 +10,83 @@ import java.util.List;
 
 public class Game {
     private Board board;
+
     private List<Player> players;
     private List<WinningStrategy> winningStrategies;
     int indexOfLastPlayerWhoMoved;
     private GameState gameState;
     private Player winner;
     private List<Move> moves; // to store the list of moves performed
+
+    public GameState getGameState() {
+        return gameState;
+    }
+    public Board getBoard() {
+        return board;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
     private Game() {
         this.players = new ArrayList<>();
         this.winningStrategies = new ArrayList<>();
         this.indexOfLastPlayerWhoMoved = -1;
         this.gameState = GameState.RUNNING;
         this.moves = new ArrayList<>();
+    }
+
+
+    // Making the move in game:
+    public void makeMove() {
+        if (!this.gameState.equals(GameState.DRAW)) {
+            int totalPossibleMoves = board.getCells().size() * board.getCells().size();
+
+            // Whenever this method is called, indexOfLastPlayerWhoMoved will be updated and the
+            // player will make move:
+            indexOfLastPlayerWhoMoved = (indexOfLastPlayerWhoMoved + 1) % (this.players.size());
+
+            Player currentPlayer = this.players.get(this.indexOfLastPlayerWhoMoved);
+            Move move = null;
+            try {
+                move = currentPlayer.makeMove(this.board, currentPlayer);
+            } catch (InvalidMoveException e) {
+                throw new RuntimeException(e);
+            }
+
+            move.getCell().setSymbol(currentPlayer.getSymbol());  //  setting the cell on board
+
+            /* After every move, we will do two things:
+               1. We will store the move in List<Move> to support undo
+               2. We will check if there is a winner by any game winning strategy
+            */
+
+            this.moves.add(move);
+            for (WinningStrategy winningStrategy : this.winningStrategies) {
+                if (winningStrategy.checkIfWon(this.board, currentPlayer)) {
+                    this.gameState = GameState.WON;
+                    this.winner = currentPlayer;
+                    return;
+                }
+            }
+
+            if (this.moves.size() == (this.board.getCells().size()) * (this.board.getCells().size())) {
+                this.gameState = GameState.DRAW;
+            }
+        }
+    }
+
+    public boolean undo() throws EmptyMovesUndoOperationException {
+        if (this.moves.isEmpty()) {
+            throw new EmptyMovesUndoOperationException("There is no move to perform undo");
+        }
+        Move lastMove = this.moves.remove(this.moves.size()-1);
+        lastMove.getCell().setSymbol(null);
+
+        // Also, we will need to reduce the indexOfLastPlayerWhoMoved to move to previous player (We should not go to -ve index):
+        indexOfLastPlayerWhoMoved = ((indexOfLastPlayerWhoMoved-1) + this.players.size())%this.players.size();
+        return true;
     }
 
 
@@ -35,7 +102,7 @@ public class Game {
         private List<WinningStrategy> winningStrategies;
         private int dimension; // Dimension of the board
 
-        Builder() {
+        public Builder() {
             this.players = new ArrayList<>();
             this.winningStrategies = new ArrayList<>();
         }

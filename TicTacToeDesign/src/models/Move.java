@@ -2,6 +2,11 @@ package models;
 
 public class Move {
     Cell cell;
+
+    public Cell getCell() {
+        return cell;
+    }
+
     Player player;  // Player details who performed the move
 
     public void setCell(Cell cell) {

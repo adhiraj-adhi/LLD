@@ -14,4 +14,9 @@ public class BotPlayer extends Player {
                 botDifficultyLevel
         );
     }
+
+    @Override
+    public Move makeMove(Board board, Player player) {
+        return this.botPlayingStrategy.makeMove(board, player);
+    }
 }

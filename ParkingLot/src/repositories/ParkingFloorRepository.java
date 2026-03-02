@@ -10,8 +10,17 @@ public class ParkingFloorRepository {
     Long idCounter=0L;
 
     public ParkingFloor save(ParkingFloor parkingFloor) {
+        idCounter+=1;
         parkingFloor.setId(idCounter);
         parkingFloors.put(idCounter, parkingFloor);
         return parkingFloor;
+    }
+
+    public ParkingFloor findById(Long floorId) {
+        return parkingFloors.get(floorId);
+    }
+
+    public void update(ParkingFloor parkingFloor) {
+        parkingFloors.put(parkingFloor.getId(), parkingFloor);
     }
 }

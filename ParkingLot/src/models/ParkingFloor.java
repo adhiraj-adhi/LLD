@@ -1,9 +1,10 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingFloor extends BaseModel {
-    private List<Spot> spots;
+    private List<Spot> spots = new ArrayList<>();
     private int floorNumber;
 
     public List<Spot> getSpots() {

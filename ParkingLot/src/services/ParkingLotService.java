@@ -2,6 +2,8 @@ package services;
 
 
 import dtos.ParkingLotResponseDTO;
+import dtos.UpdateParkingLotRequestDTO;
+import dtos.UpdateParkingLotResponseDTO;
 import models.EntryGate;
 import models.ExitGate;
 import models.ParkingFloor;
@@ -39,7 +41,9 @@ public class ParkingLotService {
 
         List<ParkingFloor> parkingFloors = new ArrayList<>();
         for (int i=0; i<numberOfFloors; i++) {
-            parkingFloors.add(new ParkingFloor());
+            ParkingFloor parkingFloor = new ParkingFloor();
+            parkingFloor.setFloorNumber(i+1);
+            parkingFloors.add(parkingFloor);
         }
         // we will be requiring to save the Floors via floor repository so:
         List<ParkingFloor> savedParkingFloors = parkingFloors.stream()
@@ -71,5 +75,20 @@ public class ParkingLotService {
         parkingLotResponseDTO.setParkingLot(savedParkingLot);
 
        return parkingLotResponseDTO;
+    }
+
+    public UpdateParkingLotResponseDTO updateParkingLotService(Long id, UpdateParkingLotRequestDTO updateParkingLotRequestDTO) {
+        /*
+        * For now, assuming we only have request to update the address
+        * */
+        // Getting Saved Parking Lot using the ID
+        ParkingLot parkingLot = parkingLotRepository.findById(id);
+        parkingLot.setAddress(updateParkingLotRequestDTO.getAddress());
+
+        // Saving the Parking Lot object
+        ParkingLot updatedParkingLot = parkingLotRepository.update(parkingLot);
+        UpdateParkingLotResponseDTO updateParkingLotResponseDTO = new UpdateParkingLotResponseDTO();
+        updateParkingLotResponseDTO.setParkingLot(updatedParkingLot);
+        return updateParkingLotResponseDTO;
     }
 }

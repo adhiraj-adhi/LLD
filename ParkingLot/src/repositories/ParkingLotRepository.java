@@ -16,4 +16,13 @@ public class ParkingLotRepository {
         parkingLots.put(idCounter, parkingLot);
         return parkingLot;
     }
+
+    public ParkingLot findById(Long id) {
+        return parkingLots.get(id);
+    }
+
+    public ParkingLot update(ParkingLot parkingLot) {
+        parkingLots.put(parkingLot.getId(), parkingLot);
+        return parkingLots.get(parkingLot.getId());
+    }
 }

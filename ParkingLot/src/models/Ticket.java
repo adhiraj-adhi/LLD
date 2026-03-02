@@ -8,8 +8,25 @@ public class Ticket extends BaseModel {
     private Operator operator;
     private Date entryTime;
     private Gate entryGate;
-    private ParkingFloor floor;
-    private ParkingLot parkingLot;
+    private int floorNumber;
+
+    private String parkingLotAddress;
+
+    public String getParkingLotAddress() {
+        return parkingLotAddress;
+    }
+
+    public void setParkingLotAddress(String parkingLotAddress) {
+        this.parkingLotAddress = parkingLotAddress;
+    }
+
+    public int getFloorNumber() {
+        return floorNumber;
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
+    }
 
     public Vehicle getVehicle() {
         return vehicle;
@@ -49,21 +66,5 @@ public class Ticket extends BaseModel {
 
     public void setEntryGate(Gate entryGate) {
         this.entryGate = entryGate;
-    }
-
-    public ParkingFloor getFloor() {
-        return floor;
-    }
-
-    public void setFloor(ParkingFloor floor) {
-        this.floor = floor;
-    }
-
-    public ParkingLot getParkingLot() {
-        return parkingLot;
-    }
-
-    public void setParkingLot(ParkingLot parkingLot) {
-        this.parkingLot = parkingLot;
     }
 }
